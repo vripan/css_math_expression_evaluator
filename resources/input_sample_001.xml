@@ -1,0 +1,9 @@
+<math>
+    <expression>1
+    </expression>
+    <variables>
+        <var a="10"/>
+        <var b="3"/>
+        <var c="312"/>
+    </variables>
+</math>
