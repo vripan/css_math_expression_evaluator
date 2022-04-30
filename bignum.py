@@ -1,4 +1,3 @@
-
 class BigNum:
     """A generic class for operations with big numbers"""
 
@@ -10,9 +9,15 @@ class BigNum:
     def __reset(self):
         self.__arr_digits = []  # internal representation - array of digits
 
+    def __check_digits(self, nr_digits, err: Exception = "Maximum digits count reached!"):
+        if nr_digits > self._maximum_digits:
+            raise err
+
     def __from_int(self, value: int):
         assert isinstance(value, int), "Value is not int!"
         assert value >= 0
+
+        self.__check_digits(len(str(value)))
 
         self.__reset()
 
@@ -26,6 +31,8 @@ class BigNum:
     def __from_string(self, value: str):
         assert isinstance(value, str), "Value is not str!"
 
+        self.__check_digits(len(value))
+
         self.__reset()
 
         try:
@@ -37,6 +44,8 @@ class BigNum:
     def __from_array(self, value: list):
         assert isinstance(value, list), "Value is not list!"
 
+        self.__check_digits(len(value))
+
         self.__reset()
 
         try:
@@ -47,7 +56,7 @@ class BigNum:
 
     def __from_bignum(self, value):
         assert isinstance(self, BigNum)
-        self.__arr_digits = value.__arr_digits
+        self.__arr_digits = value.__arr_digits.copy()
 
     @staticmethod
     def __normalize_arrays(arr1_, arr2_):
@@ -221,7 +230,6 @@ class BigNum:
         return BigNum(__q_array).__trim_zeroes()
 
     def sqrt(self):
-        #  https://www.cantorsparadise.com/the-square-root-algorithm-f97ab5c29d6d
         n = BigNum(self.__arr_digits)  # copy
         if n < 2:
             return n
@@ -268,7 +276,7 @@ class BigNum:
                 d, tmp_r = __find_d(p, r)
                 p.__arr_digits.insert(0, 0)  # *= 10
                 p.__arr_digits[0] = d
-                r -= tmp_r
+                r -= tmp_r  # r -= ((2p)|d * d)
 
         res = p
 
