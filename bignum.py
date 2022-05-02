@@ -134,7 +134,9 @@ class BigNum:
 
     def __sub__(self, other):
         other = BigNum(other)
-        assert self >= other, "Invalid sub operation!"
+
+        if self < other:
+            raise "Invalid sub operation! Negative result!"
 
         def __sub_eq_len_arrays(arr1_, arr2_):
             result = []
@@ -157,6 +159,8 @@ class BigNum:
         other = BigNum(other)
         if self == BigNum(0) or other == BigNum(0):
             return BigNum(0)
+
+        self.__check_digits(self.__digits_count() + other.__digits_count() - 1)  # lowest: m+n-1; highest: m+n
 
         def __mul_arrays(arr1_, arr2_):
             """ Compute arr1 * arr2 """
@@ -203,7 +207,8 @@ class BigNum:
 
     def __mod__(self, other):
         other = BigNum(other)
-        assert other > 0, "Invalid modulo operand!"
+        if not other > 0:
+            raise "Invalid modulo operand!"
         res = self - (self // other) * other
         assert res < other
         return res
@@ -213,7 +218,8 @@ class BigNum:
         a = self
         b = BigNum(other)
 
-        assert b != 0, "Division by 0!"
+        if b == 0:
+            raise "Division by 0!"
 
         if a <= BigNum(0):
             return BigNum(0)
