@@ -5,9 +5,12 @@ class BackendBridge:
     def __init__(self):
         pass
 
-    def compute_data(self, expression:str, variables:List[Tuple[str,str]], exponent:int) -> Tuple[str, List[str]]:
+    def exponent(self) -> str:
+        return str(BigNum.exponent())
+
+    def compute_data(self, expression:str, variables:List[Tuple[str,str]], exponent:int) -> Tuple[str, str]:
         """Bridge method between GUI and backend logic"""
 
         BigNum.exponent(exponent)
 
-        return ("0", ["no steps"])
+        return ("0", "no steps")
