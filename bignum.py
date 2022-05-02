@@ -287,6 +287,18 @@ class BigNum:
     def __str__(self):
         return "".join(str(el) for el in self.__arr_digits[::-1])
 
+    @classmethod
+    def exponent(cls, value = None):
+        """Getter and setter for maximum digits class variable"""
+        
+        if value is None:
+            return cls._maximum_digits
+
+        if value == 0:
+            raise Exception("invalid exponent value")
+
+        cls._maximum_digits = value 
+
 
 if __name__ == '__main__':
     """ Small Tests """
