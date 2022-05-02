@@ -53,6 +53,21 @@ class SimpleXML:
         return expression, variables
 
     @staticmethod
-    def save(path, expression, variables, result):
-        pass
+    def save(path, expression, variables, result, steps):
+        with open(path, "wt") as fd:
+            fd.write(f"<math>\n\t<expression>\n\t\t{expression}\n\t</expression>\n\t")
+            
+            fd.write("<variables>")
+            for name, value in variables:
+                fd.write(f"\n\t\t<var {name}=\"{value}\" />")
+            fd.write("\n\t </variables>")
+
+            fd.write(f"\n\t<result>\n\t\t{result}\n\t</result>")
+
+            fd.write("\n\t<output>")
+            for step in steps.split("\n"):
+                fd.write(f"\n\t\t{step}")
+            fd.write("\n\t</output>")
+
+            fd.write("\n</math>")
             
