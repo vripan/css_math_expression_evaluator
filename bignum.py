@@ -9,9 +9,9 @@ class BigNum:
     def __reset(self):
         self.__arr_digits = []  # internal representation - array of digits
 
-    def __check_digits(self, nr_digits, err: Exception = "Maximum digits count reached!"):
+    def __check_digits(self, nr_digits, err: str = "Maximum digits count reached!"):
         if nr_digits > self._maximum_digits:
-            raise err
+            raise Exception(err)
 
     def __from_int(self, value: int):
         assert isinstance(value, int), "Value is not int!"
@@ -83,7 +83,7 @@ class BigNum:
         elif isinstance(value, BigNum):
             self.__from_bignum(value)
         else:
-            raise "Invalid value type!"
+            raise Exception("Invalid value type!")
 
     def __eq__(self, other):
         other = BigNum(other)
@@ -134,7 +134,9 @@ class BigNum:
 
     def __sub__(self, other):
         other = BigNum(other)
-        assert self >= other, "Invalid sub operation!"
+
+        if self < other:
+            raise Exception("Invalid sub operation! Negative result!")
 
         def __sub_eq_len_arrays(arr1_, arr2_):
             result = []
@@ -157,6 +159,8 @@ class BigNum:
         other = BigNum(other)
         if self == BigNum(0) or other == BigNum(0):
             return BigNum(0)
+
+        self.__check_digits(self.__digits_count() + other.__digits_count() - 1)  # lowest: m+n-1; highest: m+n
 
         def __mul_arrays(arr1_, arr2_):
             """ Compute arr1 * arr2 """
@@ -197,13 +201,18 @@ class BigNum:
             return 1
         if power == 1:
             return BigNum(self.__arr_digits)  # copy
+
+        if self > 1:
+            self.__check_digits(power)
+
         res = BigNum.__internal_pow(self, power)
         assert res >= self
         return res
 
     def __mod__(self, other):
         other = BigNum(other)
-        assert other > 0, "Invalid modulo operand!"
+        if not other > 0:
+            raise Exception("Invalid modulo operand!")
         res = self - (self // other) * other
         assert res < other
         return res
@@ -213,7 +222,8 @@ class BigNum:
         a = self
         b = BigNum(other)
 
-        assert b != 0, "Division by 0!"
+        if b == 0:
+            raise Exception("Division by 0!")
 
         if a <= BigNum(0):
             return BigNum(0)
@@ -315,6 +325,7 @@ if __name__ == '__main__':
     print(BigNum("12319023812011111111111").sqrt())
     assert BigNum("12319023812011111111111").sqrt() == 110991097895
     assert BigNum("123190238120111111111111").sqrt() == 350984669351
+    print(BigNum("2") ** BigNum(1000))
     # assert BigNum("1231902381201111111111").sqrt() == 35098466935
 
 
