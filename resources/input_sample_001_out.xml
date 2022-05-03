@@ -1,0 +1,17 @@
+<math>
+	<expression>
+		1
+	</expression>
+	<variables>
+		<var a="10" />
+		<var b="3" />
+		<var c="312" />
+	 </variables>
+	<result>
+		0
+	</result>
+	<output>
+		no steps
+		
+	</output>
+</math>
