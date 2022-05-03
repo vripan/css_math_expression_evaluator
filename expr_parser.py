@@ -1,6 +1,5 @@
 import enum
-import unittest
-from typing import List, TypeVar
+from typing import TypeVar
 from bignum import BigNum
 
 T = TypeVar('T')
@@ -110,7 +109,7 @@ class ExpressionTokenizer:
         elif op == '/':
             ty = TokenKind.SLASH
         elif op == '%':
-            ty = TokenKind.PERCENT
+            ty = TokenKind.MODULO
         else:
             assert False, "unknown operator"
 
@@ -209,138 +208,40 @@ class VariableExpr(Expr):
         return result
 
 
-class LiteralError(BaseException):
-    pass
+def get_op_priority(op: TokenKind) -> int:
+    if op == TokenKind.DOUBLE_STAR:
+        return 2
+    if op == TokenKind.STAR or op == TokenKind.SLASH or op == TokenKind.MODULO:
+        return 1
+    if op == TokenKind.PLUS or op == TokenKind.MINUS:
+        return 0
+    assert False, "unknown operator"
 
 
-class Literal:
-    def __init__(self, parts):
-        self.parts = parts
-
-    @staticmethod
-    def parse_literal(tokens):
-        assert False, "unreachable"
-
-
-class Grammar:
-    def __init__(self, productions):
-        self.productions = productions
-
-
-class ParseError(BaseException):
-    pass
+def token_to_binary_op(kind: TokenKind) -> BinaryOperator:
+    if kind == TokenKind.PLUS:
+        return BinaryOperator.ADD
+    if kind == TokenKind.MINUS:
+        return BinaryOperator.SUB
+    if kind == TokenKind.STAR:
+        return BinaryOperator.MUL
+    if kind == TokenKind.SLASH:
+        return BinaryOperator.DIV
+    if kind == TokenKind.MODULO:
+        return BinaryOperator.REM
+    if kind == TokenKind.DOUBLE_STAR:
+        return BinaryOperator.POWER
+    assert False, "unknown token kind -> operator"
 
 
-class Parser:
-    def __init__(self, grammar: Grammar, start: int):
-        self.grammar = grammar
-        self.start = start
-
-    def parse(self, tokens: List[Token]):
-        start_symbol, _ = self.grammar.productions[self.start]
-        lst = self._parse_prod(start_symbol, tokens)
-        return start_symbol.parse_literal(lst)
-
-    def _parse_prod(self, product, tokens):
-        rules = None
-        for prod, r in self.grammar.productions:
-            if prod == product:
-                rules = r
-                break
-        assert rules is not None, "could not find rules for symbol"
-
-        for rule in rules:
-            aux_tokens = tokens.copy()
-            try:
-                for i, t in enumerate(rule):
-                    if isinstance(t, Token):
-                        if isinstance(tokens[i], Token) and t.kind == tokens[i].kind:
-                            continue
-                        raise LiteralError
-
-                    # if non literal
-                    tokens = self._parse_prod(t, tokens)
-
-                    tokens = t.parse_literal(tokens)  # todo: parse literal must be static
-                return tokens
-            except LiteralError:
-                tokens = aux_tokens
-                continue
-            except IndexError:
-                tokens = aux_tokens
-                continue
-
-        # if not found alternative, error
-        raise ParseError
+def token_to_unary_op(kind: TokenKind) -> UnaryOperator:
+    if kind == TokenKind.SQRT:
+        return UnaryOperator.SQRT
+    assert False, "unknown token kind -> operator"
 
 
-class ProductActuallyValue(Literal):
-    def __init__(self, parts):
-        Literal.__init__(self, parts)
-
-    @staticmethod
-    def parse_literal(tokens):
-        if isinstance(tokens[0], Token) or tokens[0].kind != TokenKind.NUMBER:
-            raise LiteralError
-        val = ProductActuallyValue([tokens[0]])
-        tokens = tokens[1:]
-        tokens.insert(0, val)
-        return tokens
-
-
-class Sum(Literal):
-    def __init__(self, parts):
-        Literal.__init__(self, parts)
-
-    @staticmethod
-    def parse_literal(tokens):
-        if not isinstance(tokens[0], ProductActuallyValue):
-            raise Literal
-        new_t = [tokens[0]]
-        tokens = tokens[1:]
-        while len(tokens) >= 2:
-            op = tokens[0]
-            prd = tokens[1]
-            if not isinstance(op, Token) or (op.kind != TokenKind.PLUS and op.kind != TokenKind.MINUS):
-                raise Literal
-            if not isinstance(prd, ProductActuallyValue):
-                raise Literal
-            tokens = tokens[2:]
-            new_t.append(op)
-            new_t.append(prd)
-        tokens.insert(0, Sum(new_t))
-        return tokens
-
-
-class Expr(Literal):
-    def __init__(self, parts):
-        Literal.__init__(self, parts)
-
-    @staticmethod
-    def parse_literal(tokens):
-        if len(tokens) != 1 or not isinstance(tokens[0], Sum):
-            raise LiteralError
-        return [Expr(tokens)]
-
-
-class ExpressionParser(Parser):
-    grammar = Grammar([
-        [Expr, [
-            [Sum]
-        ]],
-        [Sum, [
-            [ProductActuallyValue],
-            [ProductActuallyValue, Token(TokenKind.PLUS), ProductActuallyValue],
-            [ProductActuallyValue, Token(TokenKind.MINUS), ProductActuallyValue]
-        ]],
-        [ProductActuallyValue, [
-            [Token(TokenKind.NUMBER)]
-        ]]
-    ])
-
+class ExpressionParser:
     def __init__(self, expression: str, variables: dict, big_number_type=BigNum):
-        Parser.__init__(self, self.grammar, 0)
-
         assert big_number_type is not None
         assert big_number_type.__add__ is not None
         assert big_number_type.__sub__ is not None
@@ -358,8 +259,58 @@ class ExpressionParser(Parser):
 
     def run(self):
         self.tokens = ExpressionTokenizer(self.original_text).tokenize()
-        expr = self.parse(self.tokens)
+        expr = self.parse()
         return expr
+
+    def parse(self) -> Expr:
+        return self.parse_precedence(self.parse_expr(), 0)
+
+    def parse_expr(self) -> Expr:
+        tok = self.eat()
+        if tok.kind == TokenKind.NUMBER:
+            return NumericExpr(self.big_number_type(self.original_text[tok.loc.start:tok.loc.end]))
+        if tok.kind == TokenKind.OPEN_PAREN:
+            expr = self.parse()
+            if self.eat().kind != TokenKind.CLOSED_PAREN:
+                raise ValueError("expected )")
+            return expr
+        if tok.kind == TokenKind.SQRT:
+            subexpression = self.parse_expr()
+            op = token_to_unary_op(tok.kind)
+            return UnaryExpr(op, subexpression)
+        if tok.kind == TokenKind.VARIABLE:
+            return VariableExpr(self.original_text[tok.loc.start:tok.loc.end])
+        assert False, "unknown token"
+
+    def parse_precedence(self, left, min_priority) -> Expr:
+        lookahead = self.peek()
+        while not self.precedence_expr_is_done() and get_op_priority(lookahead.kind) >= min_priority:
+            op = self.eat()
+            right = self.parse_expr()
+
+            lookahead = self.peek()
+            while not self.precedence_expr_is_done() and get_op_priority(lookahead.kind) > get_op_priority(op.kind):
+                right = self.parse_precedence(right, min_priority + 1)
+                lookahead = self.peek()
+
+            binary_operator = token_to_binary_op(op.kind)
+            left = BinaryExpr(left, binary_operator, right)
+        return left
+
+    def peek(self) -> Token:
+        assert self.offset < len(self.tokens), "can't peek when stream already terminated"
+        return self.tokens[self.offset]
+
+    def eat(self) -> Token:
+        assert self.offset < len(self.tokens), "can't eat when stream already terminated"
+        self.offset += 1
+        return self.tokens[self.offset - 1]
+
+    def next_is_end(self) -> bool:
+        return self.peek().kind == TokenKind.END
+
+    def precedence_expr_is_done(self):
+        return self.next_is_end() or self.peek().kind == TokenKind.CLOSED_PAREN
 
 
 class Solver:
@@ -395,7 +346,7 @@ class Solver:
             return result
         elif isinstance(expr, UnaryExpr):
             if expr.op == UnaryOperator.SQRT:
-                return self.solve_normal(expr.subexpression, variables) ** (1 / 2)
+                return self.solve_normal(expr.subexpression, variables).sqrt()
             else:
                 assert False, "unknown operator"
         elif isinstance(expr, VariableExpr):
@@ -431,7 +382,7 @@ class Solver:
         assert False, "unknown node type"
 
 
-def solve(original_text: str, expr: Expr, variables: dict, big_number_type=BigNum):
+def expr_solve(expr: Expr, variables: dict, big_number_type=BigNum):
     result = ""
     while not isinstance(expr, NumericExpr):
         expr = Solver(big_number_type).solve_leftmost(expr, variables)
@@ -439,85 +390,3 @@ def solve(original_text: str, expr: Expr, variables: dict, big_number_type=BigNu
     if isinstance(expr, NumericExpr):
         return result, expr.value
     assert False, "unreachable"
-
-
-def run_one(text: str, variables: dict, big_number_type=BigNum):
-    expr = ExpressionParser(text, variables, big_number_type).run()
-    (string, result) = solve(text, expr, variables, big_number_type)
-    string = text + '\n' + str(expr.dump()) + '\n' + string + '\n'
-    print(string)
-    return result
-
-
-class TestCases(unittest.TestCase):
-    def test_rem(self):
-        with_big = run_one("5 % 2 + 0", {})
-        with_int = run_one("5 % 2 + 0", {}, int)
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_int, 1)
-
-    def test_unknown_token(self):
-        with self.assertRaises(Exception):
-            run_one("```x - 1", {"x": BigNum(0)})
-
-    def test_missing_paren(self):
-        with self.assertRaises(Exception):
-            run_one("(x - 1", {})
-
-    def test_sub_negative(self):
-        with self.assertRaises(Exception):
-            run_one("x - 1", {"x": BigNum(0)})
-
-    def test_div_0(self):
-        with self.assertRaises(Exception):
-            run_one("2 / x", {"x": BigNum(0)})
-        with self.assertRaises(Exception):
-            run_one("2 % x", {"x": BigNum(0)})
-
-    def test_complex(self):
-        with_big = run_one("2 ** (1 + 2 * x - 3 / sqrt y)", {"x": BigNum(2), "y": BigNum(9)})
-        with_int = int(run_one("2 ** (1 + 2 * x - 3 / sqrt y)", {"x": int(2), "y": int(9)}, int))
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_int, 16)
-
-    def test_vars(self):
-        with_big = run_one("(x * 2 + y * z) ** t",
-                           {"x": BigNum(2), "y": BigNum(3), "z": BigNum(4), "t": BigNum(2)})
-        with_int = run_one("(x * 2 + y * z) ** t",
-                           {"x": int(2), "y": int(3), "z": int(4), "t": int(2)}, int)
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_big, 256)
-
-    def test_sqrt(self):
-        with_big = run_one("sqrt 9 + sqrt 4", {})
-        with_int = int(run_one("sqrt 9 + sqrt 4", {}, int))
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_int, 5)
-
-    def test_special(self):
-        with_big = run_one("2 ** 3 + 5 * 6 - 3", {})
-        with_int = run_one("2 ** 3 + 5 * 6 - 3", {}, int)
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_int, 35)
-
-    def test_basic(self):
-        with_big = run_one("1 + 2 * 3 + 4 * 5", {})
-        with_int = run_one("1 + 2 * 3 + 4 * 5", {}, int)
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_int, 27)
-
-    def test_parens(self):
-        with_big = run_one("(1 + 2) * (3 + 4 * 5)", {})
-        with_int = run_one("(1 + 2) * (3 + 4 * 5)", {}, int)
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_int, 69)
-
-    def test_super_basic(self):
-        with_big = run_one("1 + 1", {})
-        with_int = run_one("1 - 2", {}, int)
-        self.assertEqual(str(with_big), str(with_int))
-        self.assertEqual(with_int, 2)
-
-
-if __name__ == "__main__":
-    unittest.main()
