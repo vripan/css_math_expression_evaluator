@@ -1,21 +1,19 @@
 <math>
 	<expression>
-		a+ b
+		a + b * 20
 	</expression>
 	<variables>
 		<var a="10" />
 		<var b="3" />
-		<var c="312" />
 	 </variables>
 	<result>
-		13
+		70
 	</result>
 	<output>
-		(a + b)
-		(10 + b)
-		(10 + 3)
-		13
-		
-		
+		(a + (b * 20))
+		(10 + (b * 20))
+		(10 + (3 * 20))
+		(10 + 60)
+		70
 	</output>
 </math>

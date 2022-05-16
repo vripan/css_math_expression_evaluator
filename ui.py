@@ -10,7 +10,7 @@ from simple_xml import SimpleXML
 
 import os
 
-def command(func, *args, **kwargs):
+def command(func, *args, **kwargs): # pragma: no cover
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -19,9 +19,9 @@ def command(func, *args, **kwargs):
             args = args[::-1]
             msg = "When " + "\n  then ".join(args) + "\nexception occured:\n  " + str(exc.args[0])
 
-            tk_messagebox.showerror("Runtime error", msg)
+            MathExpressionEvaluatorUi.error_box("Runtime error", msg)
 
-            raise Exception()
+            raise
 
     inner.__undecorated__ = func
     return inner
@@ -40,10 +40,12 @@ class ExceptionContext:
         
 
 class MathExpressionEvaluatorUi(tk.Frame):
-    def __init__(self, master, backend):
+    def __init__(self, master, backend, open_file_callback=tk_filedialog.askopenfile, save_file_as_callback=tk_filedialog.asksaveasfilename, ):
         super().__init__(master)
         
         self.backend = backend
+        self.open_file_callback = open_file_callback
+        self.save_file_as_callback = save_file_as_callback
 
         self.master.title(Strings.APP_TITLE)
         self.master.geometry(self.__build_geometry_str())
@@ -164,8 +166,8 @@ class MathExpressionEvaluatorUi(tk.Frame):
     @command
     def __command_open_xml_file(self):
         with ExceptionContext("opening xml file"):
-            filename = tk_filedialog.askopenfile(title=Strings.FILE_DIALOG_TITLE, filetypes=Config.FILE_DIALOG_FILETYPES)
-
+            filename = self.open_file_callback(title=Strings.FILE_DIALOG_TITLE, filetypes=Config.FILE_DIALOG_FILETYPES)
+            
             if filename is None:
                 return
 
@@ -181,7 +183,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
     @command
     def __command_save_xml_file(self):
         with ExceptionContext("saving xml file"):
-            filename = tk_filedialog.asksaveasfilename()
+            filename = self.save_file_as_callback()
             self.__save_to(filename)
 
     def __save_to(self, filename):
@@ -197,7 +199,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
         return True
 
     @command
-    def __command_run_xml_file(self):
+    def __command_run_xml_file(self): # pragma: no cover 
         with ExceptionContext("running xml file"):
             filename = self.__command_open_xml_file.__undecorated__(self)
             
@@ -208,7 +210,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
             self.__save_to(out_filename)
 
     @command
-    def __command_exit(self):
+    def __command_exit(self): # pragma: no cover
         self.master.destroy()
     
     @command
@@ -219,7 +221,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
             exponent = self.exponent_value()
 
         with ExceptionContext("computing math expression"):
-            result, steps = self.backend.compute_data(expression, variables, int(exponent))
+            result, steps = self.backend.compute_data(expression, list(variables.items()), int(exponent))
 
         with ExceptionContext("display results in GUI"):
             self.result_value(result)
@@ -232,10 +234,12 @@ class MathExpressionEvaluatorUi(tk.Frame):
             if value is None:
                 value = self.exponent.box.get()
                 DataValidator.is_unsigned_integer(value)
+                DataValidator.is_not_zero(value)
                 return value
         
         with ExceptionContext("setting exponent field"):
             DataValidator.is_unsigned_integer(value)
+            DataValidator.is_not_zero(value)
             self.exponent.box.delete(0, tk.END)
             self.exponent.box.insert(0, value)
 
@@ -246,10 +250,12 @@ class MathExpressionEvaluatorUi(tk.Frame):
             if value is None:
                 value = self.expression.box.get()
                 DataValidator.is_math_expression(value)
+                DataValidator.is_not_empty(value)
                 return value
 
         with ExceptionContext("setting math expression field"):
             DataValidator.is_math_expression(value)
+            DataValidator.is_not_empty(value)
             self.expression.box.delete(0, tk.END)
             self.expression.box.insert(0, value)
 
@@ -258,7 +264,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
 
         with ExceptionContext("reading variables fields"):
             if var_list is None:
-                vars = []
+                vars = {}
                 for var_box, value_box in self.vars.fields:
                     name = var_box.get()
                     value = value_box.get()
@@ -269,7 +275,10 @@ class MathExpressionEvaluatorUi(tk.Frame):
                     DataValidator.is_expression_variable(name)
                     DataValidator.is_unsigned_integer(value)
 
-                    vars.append((name, value))
+                    if name in vars:
+                        raise Exception("variables not unique")
+
+                    vars[name] = value
                 return vars
 
         with ExceptionContext("setting variables fields"):
@@ -299,6 +308,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
         with ExceptionContext("reading steps text area"):
             if value is None:
                 value = self.steps.box.get(1.0, tk.END)
+                value = value.strip('\n')
                 return value
         
         with ExceptionContext("setting steps text area"):
@@ -311,6 +321,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
         with ExceptionContext("reading result field"):
             if value is None:
                 value = self.result.box.get()
+                DataValidator.is_unsigned_integer(value)
                 return value
         
         with ExceptionContext("setting result field"):

@@ -48,7 +48,7 @@ class ExpressionTokenizer:
         self.offset = 0
         self.tokens = []
 
-    def tokenize(self) -> list[Token]:
+    def tokenize(self):
         while self.offset < len(self.source):
             first = self.source[self.offset]
 
@@ -383,7 +383,7 @@ class Solver:
 
 
 def expr_solve(expr: Expr, variables: dict, big_number_type=BigNum):
-    result = ""
+    result = str(expr.dump()) + '\n'
     while not isinstance(expr, NumericExpr):
         expr = Solver(big_number_type).solve_leftmost(expr, variables)
         result += str(expr.dump()) + '\n'
