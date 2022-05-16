@@ -1,0 +1,21 @@
+<math>
+	<expression>
+		a+ b
+	</expression>
+	<variables>
+		<var a="10" />
+		<var b="3" />
+		<var c="312" />
+	 </variables>
+	<result>
+		13
+	</result>
+	<output>
+		(a + b)
+		(10 + b)
+		(10 + 3)
+		13
+		
+		
+	</output>
+</math>

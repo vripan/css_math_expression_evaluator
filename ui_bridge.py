@@ -1,13 +1,24 @@
-
 from typing import List, Tuple
 from bignum import BigNum
+from expr_parser import ExpressionParser, expr_solve
+
+
 class BackendBridge:
     def __init__(self):
         pass
 
-    def compute_data(self, expression:str, variables:List[Tuple[str,str]], exponent:int) -> Tuple[str, List[str]]:
-        """Bridge method between GUI and backend logic"""
+    def exponent(self) -> str:
+        return str(BigNum.exponent())
 
+    def compute_data(self, expression:str, variables:List[Tuple[str,str]], exponent:int) -> Tuple[str, str]:
+        """Bridge method between GUI and backend logic"""
         BigNum.exponent(exponent)
 
-        return ("0", ["no steps"])
+        vars = {}
+        for var, val in variables:
+            vars[var] = BigNum(val)
+        parser = ExpressionParser(expression, vars, BigNum)
+        expr = parser.run()
+        output, result = expr_solve(expr, vars)
+
+        return (str(result), output)

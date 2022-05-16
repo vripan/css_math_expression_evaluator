@@ -4,16 +4,48 @@ from tkinter import messagebox as tk_messagebox
 from tkinter import filedialog as tk_filedialog
 from types import SimpleNamespace
 from data_validator import DataValidator
-from ui_bridge import BackendBridge
 from ui_strings import Strings
 from ui_config import Config
 from simple_xml import SimpleXML
 
+import os
+
+def command(func, *args, **kwargs): # pragma: no cover
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as exc:
+            args = exc.args[1:]
+            args = args[::-1]
+            msg = "When " + "\n  then ".join(args) + "\nexception occured:\n  " + str(exc.args[0])
+
+            MathExpressionEvaluatorUi.error_box("Runtime error", msg)
+
+            raise
+
+    inner.__undecorated__ = func
+    return inner
+
+class ExceptionContext:
+    def __init__(self, *args):
+        self.args = args
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, traceback):
+       if type is not None:
+          value.args += self.args
+          return False
+        
+
 class MathExpressionEvaluatorUi(tk.Frame):
-    def __init__(self, master, backend):
+    def __init__(self, master, backend, open_file_callback=tk_filedialog.askopenfile, save_file_as_callback=tk_filedialog.asksaveasfilename, ):
         super().__init__(master)
         
         self.backend = backend
+        self.open_file_callback = open_file_callback
+        self.save_file_as_callback = save_file_as_callback
 
         self.master.title(Strings.APP_TITLE)
         self.master.geometry(self.__build_geometry_str())
@@ -29,6 +61,8 @@ class MathExpressionEvaluatorUi(tk.Frame):
 
         self.pack()
 
+        self.exponent_value(self.backend.exponent())
+
     def __build_geometry_str(self):
         coord_x = (self.master.winfo_screenwidth() - Config.WIDTH) // 2
         coord_y = (self.master.winfo_screenheight() - Config.HEIGHT) // 2
@@ -40,6 +74,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
         file = tk.Menu(bar, tearoff=0)
         file.add_command(label=Strings.OPEN_XML_COMMAND, command=self.__command_open_xml_file)
         file.add_command(label=Strings.SAVE_XML_COMMAND, command=self.__command_save_xml_file)
+        file.add_command(label=Strings.RUN_XML_COMMAND, command=self.__command_run_xml_file)
         file.add_separator()
         file.add_command(label=Strings.EXIT_COMMAND, command=self.__command_exit)
         bar.add_cascade(label=Strings.FILE_CASCADE_MENU, menu=file)
@@ -59,7 +94,7 @@ class MathExpressionEvaluatorUi(tk.Frame):
     def __build_expression_widget(self):
         self.expression = SimpleNamespace()
         
-        self.expression.frame = tk.LabelFrame(self.master, text=Strings.WIDGET_EXPONENT_TITLE, width=480)
+        self.expression.frame = tk.LabelFrame(self.master, text=Strings.WIDGET_EXPRESSION_TITLE, width=480)
         self.expression.label = tk.Label(self.expression.frame, text=Strings.WIDGET_EXPRESSION_DESCRIPTION, state=tk.DISABLED)
         self.expression.box = tk.Entry(self.expression.frame)
         
@@ -128,132 +163,168 @@ class MathExpressionEvaluatorUi(tk.Frame):
 
         self.compute.button.pack(side=tk.TOP, fill=tk.X, padx=10, pady=15)
 
+    @command
     def __command_open_xml_file(self):
-        filename = tk_filedialog.askopenfile(title=Strings.FILE_DIALOG_TITLE, filetypes=Config.FILE_DIALOG_FILETYPES)
+        with ExceptionContext("opening xml file"):
+            filename = self.open_file_callback(title=Strings.FILE_DIALOG_TITLE, filetypes=Config.FILE_DIALOG_FILETYPES)
+            
+            if filename is None:
+                return
 
-        if filename is None:
-            return
+            with ExceptionContext("loading xml file"):
+                expression, variables = SimpleXML.load(filename.name)
 
-        try:
-            expression, variables = SimpleXML.load(filename.name)
-        except Exception as exc:
-            tk_messagebox.showerror("Failed to load XML", "Exception occured: %s" % str(exc))
-            return
-        
-        try:
-            self.expression_value(expression)
-            self.variables_value(variables)
-        except Exception as exc:
-            tk_messagebox.showerror("Failed to load XML", "Exception occured: %s" % str(exc))
-            return
+            with ExceptionContext("setting GUI from xml"):
+                self.expression_value(expression)
+                self.variables_value(variables)
 
+            return filename.name
+
+    @command
     def __command_save_xml_file(self):
-        filename = tk_filedialog.asksaveasfilename()
+        with ExceptionContext("saving xml file"):
+            filename = self.save_file_as_callback()
+            self.__save_to(filename)
 
-        try:
+    def __save_to(self, filename):
+        with ExceptionContext("reading GUI fields"):
             expression = self.expression_value()
             variables = self.variables_value()
             result = self.result_value()
+            steps = self.steps_value()
 
-            SimpleXML.save(filename, expression, variables, result)
-        except Exception as exc:
-            tk_messagebox.showerror("Failed to save XML", "Exception occured: %s" % str(exc))
-            return
+        with ExceptionContext("writting to file"):
+            SimpleXML.save(filename, expression, variables, result, steps)
 
-    def __command_exit(self):
+        return True
+
+    @command
+    def __command_run_xml_file(self): # pragma: no cover 
+        with ExceptionContext("running xml file"):
+            filename = self.__command_open_xml_file.__undecorated__(self)
+            
+            name, ext = os.path.splitext(filename)
+            out_filename = name + "_out" + ext
+
+            self.__command_compute.__undecorated__(self)
+            self.__save_to(out_filename)
+
+    @command
+    def __command_exit(self): # pragma: no cover
         self.master.destroy()
     
+    @command
     def __command_compute(self):
-        try:
+        with ExceptionContext("loading data from GUI"):
             expression = self.expression_value()
             variables = self.variables_value()
             exponent = self.exponent_value()
-        except Exception as exc:
-            tk_messagebox.showerror("Invalid input data", "Exception occured: %s" % str(exc))
-            return 
-            
-        try:
-            result, steps = self.backend.compute_data(expression, variables, 0)
-        except Exception as exc:
-            tk_messagebox.showerror("Failed to compute expression", "Exception occured: %s" % str(exc))
-            return
 
-        self.result_value(result)
-        self.steps_value(steps)
+        with ExceptionContext("computing math expression"):
+            result, steps = self.backend.compute_data(expression, list(variables.items()), int(exponent))
+
+        with ExceptionContext("display results in GUI"):
+            self.result_value(result)
+            self.steps_value(steps)
 
     def exponent_value(self, value=None):
         """Set or get exponent field"""
 
-        if value is None:
-            value = self.exponent.box.get()
-            DataValidator.is_unsigned_integer(value)
-            return value
+        with ExceptionContext("reading exponent field"):
+            if value is None:
+                value = self.exponent.box.get()
+                DataValidator.is_unsigned_integer(value)
+                DataValidator.is_not_zero(value)
+                return value
         
-        DataValidator.is_unsigned_integer(value)
-        self.exponent.box.delete(0, tk.END)
-        self.exponent.box.insert(0, value)
+        with ExceptionContext("setting exponent field"):
+            DataValidator.is_unsigned_integer(value)
+            DataValidator.is_not_zero(value)
+            self.exponent.box.delete(0, tk.END)
+            self.exponent.box.insert(0, value)
 
     def expression_value(self, value=None):
         """Set or get expression field"""
 
-        if value is None:
-            value = self.expression.box.get()
-            DataValidator.is_math_expression(value)
-            return value
+        with ExceptionContext("reading math expression field"):
+            if value is None:
+                value = self.expression.box.get()
+                DataValidator.is_math_expression(value)
+                DataValidator.is_not_empty(value)
+                return value
 
-        DataValidator.is_math_expression(value)
-        self.expression.box.delete(0, tk.END)
-        self.expression.box.insert(0, value)
+        with ExceptionContext("setting math expression field"):
+            DataValidator.is_math_expression(value)
+            DataValidator.is_not_empty(value)
+            self.expression.box.delete(0, tk.END)
+            self.expression.box.insert(0, value)
 
     def variables_value(self, var_list=None):
         """Set or get expression variables fields"""
 
-        if var_list is None:
-            vars = []
+        with ExceptionContext("reading variables fields"):
+            if var_list is None:
+                vars = {}
+                for var_box, value_box in self.vars.fields:
+                    name = var_box.get()
+                    value = value_box.get()
+
+                    if len(name) == 0:
+                        continue
+
+                    DataValidator.is_expression_variable(name)
+                    DataValidator.is_unsigned_integer(value)
+
+                    if name in vars:
+                        raise Exception("variables not unique")
+
+                    vars[name] = value
+                return vars
+
+        with ExceptionContext("setting variables fields"):
+            while len(self.vars.fields) < len(var_list):
+                self.__add_var_fields()
+
             for var_box, value_box in self.vars.fields:
-                name = var_box.get()
-                value = value_box.get()
+                var_box.delete(0, tk.END)
+                value_box.delete(0, tk.END)
+
+            for idx, var  in enumerate(var_list.items()):
+                name, value = var
+                var_box, value_box = self.vars.fields[idx]
+
                 DataValidator.is_expression_variable(name)
                 DataValidator.is_unsigned_integer(value)
 
-                vars.append((name, value))
-            return vars
+                var_box.delete(0, tk.END)
+                var_box.insert(0, name)
 
-        while len(self.vars.fields) < len(var_list):
-            self.__add_var_fields()
-
-        for var_box, value_box in self.vars.fields:
-            var_box.delete(0, tk.END)
-            value_box.delete(0, tk.END)
-
-        for idx, var  in enumerate(var_list.items()):
-            name, value = var
-            var_box, value_box = self.vars.fields[idx]
-            
-            DataValidator.is_expression_variable(name)
-            DataValidator.is_unsigned_integer(value)
-
-            var_box.delete(0, tk.END)
-            var_box.insert(0, name)
-
-            value_box.delete(0, tk.END)
-            value_box.insert(0, value)
+                value_box.delete(0, tk.END)
+                value_box.insert(0, value)
 
     def steps_value(self, value=None):
         """Set or get steps field"""
 
-        if value is None:
-            value = self.steps.box.get(1.0, tk.END)
-            return value
+        with ExceptionContext("reading steps text area"):
+            if value is None:
+                value = self.steps.box.get(1.0, tk.END)
+                value = value.strip('\n')
+                return value
         
-        self.steps.box.delete(1.0, tk.END)
-        self.steps.box.insert(1.0, value)
+        with ExceptionContext("setting steps text area"):
+            self.steps.box.delete(1.0, tk.END)
+            self.steps.box.insert(1.0, value)
 
     def result_value(self, value=None):
-        if value is None:
-            value = self.result.box.get()
-            return value
+        """Set or get result field"""
+
+        with ExceptionContext("reading result field"):
+            if value is None:
+                value = self.result.box.get()
+                DataValidator.is_unsigned_integer(value)
+                return value
         
-        DataValidator.is_unsigned_integer(value)
-        self.result.box.delete(0, tk.END)
-        self.result.box.insert(0, value)
+        with ExceptionContext("setting result field"):
+            DataValidator.is_unsigned_integer(value)
+            self.result.box.delete(0, tk.END)
+            self.result.box.insert(0, value)

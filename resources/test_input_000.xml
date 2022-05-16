@@ -1,9 +1,9 @@
 <math>
-    <expression> a+ b
+    <expression>
+    a + b * 20
     </expression>
     <variables>
-        <var a="10"/>
+        <var a="10" />
         <var b="3"/>
-        <var c="312"/>
     </variables>
 </math>

@@ -2,6 +2,7 @@ class Strings:
     APP_TITLE = "MathEval"
     OPEN_XML_COMMAND = "Open XML"
     SAVE_XML_COMMAND = "Save XML"
+    RUN_XML_COMMAND = "Run XML"
     EXIT_COMMAND = "Exit"
     FILE_CASCADE_MENU = "File"
     FILE_DIALOG_TITLE = "Open XML input file"
