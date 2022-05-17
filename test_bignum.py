@@ -102,7 +102,9 @@ class TestBigNum(unittest.TestCase):
     def test_invalid_input(self):
         with self.assertRaises(Exception):
             BigNum("a")
+            BigNum("a1")
             BigNum("-1")
+            BigNum("1.2")
             BigNum(-1)
             BigNum(1.2)
 
