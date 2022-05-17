@@ -346,6 +346,8 @@ class Solver:
             return result
         elif isinstance(expr, UnaryExpr):
             if expr.op == UnaryOperator.SQRT:
+                if self.big_number_type == int:
+                    return self.solve_normal(expr.subexpression, variables) ** (1/2)
                 return self.solve_normal(expr.subexpression, variables).sqrt()
             else:
                 assert False, "unknown operator"
@@ -390,3 +392,10 @@ def expr_solve(expr: Expr, variables: dict, big_number_type=BigNum):
     if isinstance(expr, NumericExpr):
         return result, expr.value
     assert False, "unreachable"
+
+def run_one(text: str, variables: dict, big_number_type=BigNum):
+    expr = ExpressionParser(text, variables, big_number_type).run()
+    (string, result) = expr_solve(expr, variables, big_number_type)
+    string = text + '\n' + str(expr.dump()) + '\n' + string + '\n'
+    # print(string)
+    return result
