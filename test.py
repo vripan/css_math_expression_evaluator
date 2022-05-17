@@ -1,6 +1,8 @@
 import unittest, os, shutil
 
 from test_ui import *
+from test_expr_parser import *
+from test_ui_bridge import *
 
 if __name__ == "__main__":
     unittest.test_files_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources")
