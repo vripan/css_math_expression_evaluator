@@ -1,6 +1,7 @@
 import unittest, os, shutil
 
 from test_ui import *
+from test_bignum import *
 from test_expr_parser import *
 from test_ui_bridge import *
 
