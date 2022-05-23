@@ -129,8 +129,11 @@ class BigNum:
             return result
 
         __result = __add_eq_len_arrays(*BigNum.__normalize_arrays(self.__arr_digits, other.__arr_digits))
+        __result = BigNum(__result).__trim_zeroes()
 
-        return BigNum(__result).__trim_zeroes()
+        assert __result >= self and __result >= other
+
+        return __result
 
     def __sub__(self, other):
         other = BigNum(other)
@@ -152,8 +155,11 @@ class BigNum:
             return result
 
         __result = __sub_eq_len_arrays(*BigNum.__normalize_arrays(self.__arr_digits, other.__arr_digits))
+        __result = BigNum(__result).__trim_zeroes()
 
-        return BigNum(__result).__trim_zeroes()
+        assert __result <= self
+
+        return __result
 
     def __mul__(self, other):
         other = BigNum(other)
@@ -182,8 +188,11 @@ class BigNum:
             else [other.__arr_digits, self.__arr_digits]
 
         __result = __mul_arrays(arr1, arr2)
+        __result = BigNum(__result).__trim_zeroes()
 
-        return BigNum(__result).__trim_zeroes()
+        assert __result >= self or __result >= other
+
+        return __result
 
     @staticmethod
     def __internal_pow(n, p):
@@ -237,7 +246,11 @@ class BigNum:
                 __q_array[i] += 1
                 r -= b
 
-        return BigNum(__q_array).__trim_zeroes()
+        __result = BigNum(__q_array).__trim_zeroes()
+
+        assert b * __result + r == self
+
+        return __result
 
     def sqrt(self):
         n = BigNum(self.__arr_digits)  # copy
