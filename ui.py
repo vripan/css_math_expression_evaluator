@@ -19,7 +19,7 @@ def command(func, *args, **kwargs): # pragma: no cover
             args = args[::-1]
             msg = "When " + "\n  then ".join(args) + "\nexception occured:\n  " + str(exc.args[0])
 
-            MathExpressionEvaluatorUi.error_box("Runtime error", msg)
+            tk_messagebox.showerror("Runtime error", msg)
 
             raise
 
