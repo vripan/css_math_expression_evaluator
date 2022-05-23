@@ -222,6 +222,8 @@ class MathExpressionEvaluatorUi(tk.Frame):
 
         with ExceptionContext("computing math expression"):
             result, steps = self.backend.compute_data(expression, list(variables.items()), int(exponent))
+            assert type(steps) is str and len(steps) > 0, "invalid result"
+            assert type(result) is str and len(result) > 0, "invalid result"
 
         with ExceptionContext("display results in GUI"):
             self.result_value(result)
