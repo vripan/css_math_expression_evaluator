@@ -43,8 +43,8 @@
             </div>
         </div>
         <h2>
-            <span class="text">236 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">224<span class="text"> run</span></button>
+            <span class="text">238 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">226<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">12<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -118,7 +118,7 @@
     <p class="run"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">__arr_digits</span> <span class="op">=</span> <span class="nam">value</span><span class="op">.</span><span class="nam">__arr_digits</span><span class="op">.</span><span class="nam">copy</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t60" href="#t60">60</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t">    <span class="op">@</span><span class="nam">staticmethod</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t">    <span class="key">def</span> <span class="nam">__normalize_arrays</span><span class="op">(</span><span class="nam">arr1_</span><span class="op">,</span> <span class="nam">arr2_</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t">    <span class="key">def</span> <span class="nam">__normalize_arrays</span><span class="op">(</span><span class="nam">arr1_</span><span class="op">,</span> <span class="nam">arr2_</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t">        <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">arr1_</span><span class="op">)</span> <span class="op">!=</span> <span class="nam">len</span><span class="op">(</span><span class="nam">arr2_</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t">            <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">arr1_</span><span class="op">)</span> <span class="op">></span> <span class="nam">len</span><span class="op">(</span><span class="nam">arr2_</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">                <span class="nam">arr2_</span> <span class="op">=</span> <span class="nam">arr2_</span> <span class="op">+</span> <span class="op">[</span><span class="num">0</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="nam">len</span><span class="op">(</span><span class="nam">arr1_</span><span class="op">)</span> <span class="op">-</span> <span class="nam">len</span><span class="op">(</span><span class="nam">arr2_</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -245,7 +245,7 @@
     <p class="run"><span class="n"><a id="t186" href="#t186">186</a></span><span class="t">        <span class="key">return</span> <span class="nam">BigNum</span><span class="op">(</span><span class="nam">__result</span><span class="op">)</span><span class="op">.</span><span class="nam">__trim_zeroes</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t187" href="#t187">187</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t188" href="#t188">188</a></span><span class="t">    <span class="op">@</span><span class="nam">staticmethod</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t189" href="#t189">189</a></span><span class="t">    <span class="key">def</span> <span class="nam">__internal_pow</span><span class="op">(</span><span class="nam">n</span><span class="op">,</span> <span class="nam">p</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t189" href="#t189">189</a></span><span class="t">    <span class="key">def</span> <span class="nam">__internal_pow</span><span class="op">(</span><span class="nam">n</span><span class="op">,</span> <span class="nam">p</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t190" href="#t190">190</a></span><span class="t">        <span class="key">if</span> <span class="nam">p</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t191" href="#t191">191</a></span><span class="t">            <span class="key">return</span> <span class="nam">BigNum</span><span class="op">(</span><span class="num">1</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t192" href="#t192">192</a></span><span class="t">        <span class="key">if</span> <span class="nam">p</span> <span class="op">==</span> <span class="num">1</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -393,7 +393,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v6.3.3</a>,
-            created at 2022-05-17 11:51 +0300
+            created at 2022-05-23 18:22 +0300
         </p>
     </div>
 </footer>
