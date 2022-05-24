@@ -43,6 +43,8 @@ class SimpleXML:
 
     @staticmethod
     def load(path):
+        assert type(path) is str and len(path) > 0, "invalid path"
+
         expression = ""
         variables = {}
 
@@ -54,6 +56,8 @@ class SimpleXML:
 
     @staticmethod
     def save(path, expression, variables, result, steps):
+        assert type(path) is str and len(path) > 0, "invalid path"
+
         with open(path, "wt") as fd:
             fd.write(f"<math>\n\t<expression>\n\t\t{expression}\n\t</expression>\n\t")
             

@@ -19,7 +19,7 @@ def command(func, *args, **kwargs): # pragma: no cover
             args = args[::-1]
             msg = "When " + "\n  then ".join(args) + "\nexception occured:\n  " + str(exc.args[0])
 
-            MathExpressionEvaluatorUi.error_box("Runtime error", msg)
+            tk_messagebox.showerror("Runtime error", msg)
 
             raise
 
@@ -222,6 +222,8 @@ class MathExpressionEvaluatorUi(tk.Frame):
 
         with ExceptionContext("computing math expression"):
             result, steps = self.backend.compute_data(expression, list(variables.items()), int(exponent))
+            assert type(steps) is str and len(steps) > 0, "invalid result"
+            assert type(result) is str and len(result) > 0, "invalid result"
 
         with ExceptionContext("display results in GUI"):
             self.result_value(result)
