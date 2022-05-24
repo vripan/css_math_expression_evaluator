@@ -49,6 +49,8 @@ class ExpressionTokenizer:
         self.tokens = []
 
     def tokenize(self):
+        assert len(self.tokens) == 0, "Cannot call tokenize more times"
+
         while self.offset < len(self.source):
             first = self.source[self.offset]
 
@@ -242,6 +244,14 @@ def token_to_unary_op(kind: TokenKind) -> UnaryOperator:
 
 class ExpressionParser:
     def __init__(self, expression: str, variables: dict, big_number_type=BigNum):
+        assert big_number_type is not None
+        assert big_number_type.__add__ is not None
+        assert big_number_type.__sub__ is not None
+        assert big_number_type.__mul__ is not None
+        assert big_number_type.__floordiv__ is not None
+        assert big_number_type.__mod__ is not None
+        assert big_number_type.__pow__ is not None
+        assert len(expression) > 0, "expression can't be empty"
 
         self.original_text = expression
         self.vars = variables
@@ -290,9 +300,11 @@ class ExpressionParser:
         return left
 
     def peek(self) -> Token:
+        assert self.offset < len(self.tokens), "can't peek when stream already terminated"
         return self.tokens[self.offset]
 
     def eat(self) -> Token:
+        assert self.offset < len(self.tokens), "can't eat when stream already terminated"
         self.offset += 1
         return self.tokens[self.offset - 1]
 
@@ -312,6 +324,9 @@ class Solver:
         if isinstance(expr, BinaryExpr):
             left = self.solve_normal(expr.left, variables)
             right = self.solve_normal(expr.right, variables)
+            
+            assert isinstance(left, self.big_number_type), "Solve must return the same type"
+            assert isinstance(right, self.big_number_type), "Solve must return the same type"
 
             if expr.op == BinaryOperator.ADD:
                 result = left + right
@@ -333,17 +348,21 @@ class Solver:
                 result = left % right
             else:
                 assert False, "unknown operator"
+
+            assert isinstance(result, self.big_number_type), "Result must be the same type"
             return result
         elif isinstance(expr, UnaryExpr):
             if expr.op == UnaryOperator.SQRT:
                 if self.big_number_type == int:
-                    return self.solve_normal(expr.subexpression, variables) ** (1/2)
+                    return int(self.solve_normal(expr.subexpression, variables) ** (1/2))
                 return self.solve_normal(expr.subexpression, variables).sqrt()
             else:
                 assert False, "unknown operator"
         elif isinstance(expr, VariableExpr):
+            assert isinstance(variables[expr.variable_name], self.big_number_type), "Variable must have passed type"
             return variables[expr.variable_name]
         elif isinstance(expr, NumericExpr):
+            assert isinstance(expr.value, self.big_number_type), "Number must have passed type"
             return expr.value
         else:
             assert False, "unknown node type"
