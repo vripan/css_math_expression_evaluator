@@ -242,14 +242,6 @@ def token_to_unary_op(kind: TokenKind) -> UnaryOperator:
 
 class ExpressionParser:
     def __init__(self, expression: str, variables: dict, big_number_type=BigNum):
-        assert big_number_type is not None
-        assert big_number_type.__add__ is not None
-        assert big_number_type.__sub__ is not None
-        assert big_number_type.__mul__ is not None
-        assert big_number_type.__floordiv__ is not None
-        assert big_number_type.__mod__ is not None
-        assert big_number_type.__pow__ is not None
-        assert len(expression) > 0, "expression can't be empty"
 
         self.original_text = expression
         self.vars = variables
@@ -298,11 +290,9 @@ class ExpressionParser:
         return left
 
     def peek(self) -> Token:
-        assert self.offset < len(self.tokens), "can't peek when stream already terminated"
         return self.tokens[self.offset]
 
     def eat(self) -> Token:
-        assert self.offset < len(self.tokens), "can't eat when stream already terminated"
         self.offset += 1
         return self.tokens[self.offset - 1]
 
