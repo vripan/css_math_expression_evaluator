@@ -1,5 +1,5 @@
 import unittest
-from bignum import BigNum
+from src.bignum import BigNum
 
 
 class TestBigNum(unittest.TestCase):

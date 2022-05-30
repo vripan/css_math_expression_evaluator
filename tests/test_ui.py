@@ -1,12 +1,12 @@
-import os
-import unittest
+import os, sys, unittest
 from types import SimpleNamespace
 
 from sympy import EX
-from ui import MathExpressionEvaluatorUi
-from ui_bridge import BackendBridge
 import tkinter as tk
 from tkinter import messagebox as tk_messagebox
+
+from src.ui import MathExpressionEvaluatorUi
+from src.ui_bridge import BackendBridge
 
 
 import unittest

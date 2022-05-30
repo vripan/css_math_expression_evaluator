@@ -1,5 +1,5 @@
 import unittest
-from expr_parser import *
+from src.expr_parser import *
 
 class ExprParserTestCases(unittest.TestCase):
     def test_rem(self):
