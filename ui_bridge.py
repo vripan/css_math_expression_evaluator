@@ -12,6 +12,8 @@ class BackendBridge:
 
     def compute_data(self, expression:str, variables:List[Tuple[str,str]], exponent:int) -> Tuple[str, str]:
         """Bridge method between GUI and backend logic"""
+        assert exponent >= 0, "invalid exponent"
+
         BigNum.exponent(exponent)
 
         vars = {}
