@@ -21,6 +21,7 @@ Table of contents
    how_to_run
    components
    testing
+   assertions
    contributions
 
 Reports

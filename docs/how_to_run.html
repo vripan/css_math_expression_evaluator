@@ -14,7 +14,6 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -53,6 +52,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="components.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assertions.html">Assertions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributions.html">Contributions</a></li>
 </ul>
 <ul>
@@ -84,13 +84,13 @@
            <div itemprop="articleBody">
              
   <section id="how-to-run">
-<h1>How to run<a class="headerlink" href="#how-to-run" title="Permalink to this heading"></a></h1>
+<h1>How to run<a class="headerlink" href="#how-to-run" title="Permalink to this headline"></a></h1>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
 <p>The application has been tested using python 3.8.0, with no external depencies.</p>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
 <p>The application is based on a graphic user interface (GUI) and can be started from <code class="code docutils literal notranslate"><span class="pre">src/main.py</span></code>.</p>
 <img alt="_images/gui_init.png" class="align-center" src="_images/gui_init.png" />
 <div class="line-block">
@@ -98,7 +98,7 @@
 </div>
 <p>There are two ways for interacting with the GUI, directly using the input fields or using XML formated documents.</p>
 <section id="direct-interaction">
-<h3>Direct Interaction<a class="headerlink" href="#direct-interaction" title="Permalink to this heading"></a></h3>
+<h3>Direct Interaction<a class="headerlink" href="#direct-interaction" title="Permalink to this headline"></a></h3>
 <p>There are multiple input fields and two output fields. The input data, like the math formula, variables and the exponent, can be directly typed into fields. And as output, the application will display the formula result, the steps to get from the expression form to results or an error window if an exception case is reached.</p>
 <p><strong>Exponent field.</strong>
 Expects an unsigned integer that represent the maximum number the application can work with, e.g. an expoenent with value of <code class="code docutils literal notranslate"><span class="pre">10</span></code> represents that the maximum value for integers and operation results is <code class="code docutils literal notranslate"><span class="pre">10</span></code> raised to the power <code class="code docutils literal notranslate"><span class="pre">10</span></code>, resulting in <code class="code docutils literal notranslate"><span class="pre">10000000000</span></code>.</p>
@@ -125,7 +125,7 @@ A variable is represented by a pair between a name and the value of the variable
 </div>
 </section>
 <section id="xml-interaction">
-<h3>XML Interaction<a class="headerlink" href="#xml-interaction" title="Permalink to this heading"></a></h3>
+<h3>XML Interaction<a class="headerlink" href="#xml-interaction" title="Permalink to this headline"></a></h3>
 <p>Apllication can use XML files for input, output serialization, or complete calculation of an input file as a non-interactive mode. The available XML operation are available in menu entry <cite>File</cite>.</p>
 <img alt="_images/gui_menu.png" class="align-center" src="_images/gui_menu.png" />
 <div class="line-block">
@@ -138,7 +138,7 @@ A variable is represented by a pair between a name and the value of the variable
 </ul>
 </section>
 <section id="xml-structure">
-<h3>XML Structure<a class="headerlink" href="#xml-structure" title="Permalink to this heading"></a></h3>
+<h3>XML Structure<a class="headerlink" href="#xml-structure" title="Permalink to this headline"></a></h3>
 <p><strong>Input structure.</strong> The input file has the following schema:</p>
 <ul class="simple">
 <li><p>the root tag <code class="code docutils literal notranslate"><span class="pre">&lt;math&gt;</span></code></p></li>
@@ -186,7 +186,7 @@ A variable is represented by a pair between a name and the value of the variable
 </section>
 </section>
 <section id="exception-cases">
-<h2>Exception Cases<a class="headerlink" href="#exception-cases" title="Permalink to this heading"></a></h2>
+<h2>Exception Cases<a class="headerlink" href="#exception-cases" title="Permalink to this headline"></a></h2>
 <p>There are some exception cases that are considered in the application. For every exception case a exection context is given through the error window to indentify the error location easier. For example, if an invalid set of variables is given, the following error box will be displayed:</p>
 <img alt="_images/gui_error.png" class="align-center" src="_images/gui_error.png" />
 <div class="line-block">

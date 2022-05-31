@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assertions &mdash; MathExpressionEvaluator  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributions" href="contributions.html" />
+    <link rel="prev" title="Testing" href="testing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> MathExpressionEvaluator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">Software Quality - Project Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_run.html">How to run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Assertions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gui">GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expression-parser">Expression Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#big-number">Big Number</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">Contributions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="coverage.html">Coverage report</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MathExpressionEvaluator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Assertions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/assertions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="assertions">
+<h1>Assertions<a class="headerlink" href="#assertions" title="Permalink to this headline"></a></h1>
+<p>Every application component checks preconditions, invariants and postconditions.</p>
+<section id="gui">
+<h2>GUI<a class="headerlink" href="#gui" title="Permalink to this headline"></a></h2>
+<p>The application user interfaces treats the majority of cases as exceptions. The relevant preconditions in GUI are related to string validations because all getters and setters use expects string as argument type:</p>
+<ul class="simple">
+<li><p><strong>parameter type</strong> checks, e.g. <code class="code docutils literal notranslate"><span class="pre">assert</span> <span class="pre">type(param)</span> <span class="pre">is</span> <span class="pre">str</span></code></p></li>
+<li><p><strong>parameter len</strong> checks, e.g. <code class="code docutils literal notranslate"><span class="pre">assert</span> <span class="pre">len(result)</span> <span class="pre">&gt;</span> <span class="pre">0</span></code></p></li>
+</ul>
+</section>
+<section id="expression-parser">
+<h2>Expression Parser<a class="headerlink" href="#expression-parser" title="Permalink to this headline"></a></h2>
+</section>
+<section id="big-number">
+<h2>Big Number<a class="headerlink" href="#big-number" title="Permalink to this headline"></a></h2>
+<p>The following operations contain pre/post conditions checks:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>__add__</strong> (Addition):</dt><dd><ul>
+<li><p><strong>Postcondition</strong>: An assert is used that checks the resulted value is bigger that both inputs.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>__sub__</strong> (Substraction):</dt><dd><ul>
+<li><p><strong>Precondition</strong>: An exception is thrown if the substracted value is bigger than the value from which it’s being substracted, which would yield a negative result, which is not supported.</p></li>
+<li><p><strong>Postcondition</strong>: An assert is used that checks the resulted value is smaller or equal than the initial value.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>__mul__</strong> (Multiplication):</dt><dd><ul>
+<li><p><strong>Postcondition</strong>: An assert is used that checks that at least one of the values is less or equal than the result.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>__pow__</strong> (Power):</dt><dd><ul>
+<li><p><strong>Postcondition</strong>: An assert is used to validate that the result is bigger than the first operand, excepting a power of 0 or 1.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>__mod__</strong> (Modulo):</dt><dd><ul>
+<li><p><strong>Precondition</strong>: An exception is thrown if the modulus is not bigger than 0.</p></li>
+<li><p><strong>Postcondition</strong>: An assert is used to validate that the result (remainder) is less than the modulus operand.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>__floordiv__</strong> (Floor/Integer Division):</dt><dd><ul>
+<li><p><strong>Precondition</strong>: An exception is thrown if the divisor is 0.</p></li>
+<li><p><strong>Postcondition</strong>: An assert is used to verify that the result is correct, by validating that the quotient multiplied by the divisor plus the remainder is equal to the dividend.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>sqrt</strong> (Square Root):</dt><dd><ul>
+<li><p><strong>Postcondition</strong>: An assert is used to validate that the result squared is less or equal than the input, and that (result + 1) squared is strictly bigger than the input.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="testing.html" class="btn btn-neutral float-left" title="Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributions.html" class="btn btn-neutral float-right" title="Contributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vladimir RIPAN, Stefan PETROVICI, Gabriel PANTIRU.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
