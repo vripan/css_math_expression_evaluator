@@ -13,7 +13,12 @@ Each member of the team was assigned with one of the three modules during the en
 * Added assert checks for identified preconditions, invariants and postconditions.
 * Implemented a bridge class for a simple backend-frontend interaction.
 
+**BigNum.** Developed by |github_logo| `gapantiru <https://github.com/gapantiru/>`_. Main tasks:
 
+* Implemented the BigNum module.
+* Implemented each operation needed by the expression parser to compute the result.
+* Tested the correctness of each operation implemented by the component.
+* Validated preconditions and postconditions via exceptions and asserts, including invalid input.
 
 .. |github_logo| image:: _static/img/github_logo.png
    :height: 12

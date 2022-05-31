@@ -23,3 +23,55 @@ Expression Parser Testing
 
 Big Number Testing
 ***************************
+This section contains specifications regarding the Unit Testing conducted for the BigNum Component.
+
+Note: **_MAX_N** represents the maximum range of numbers used in the test methods, which can be modified in the code (defaults to **100**).
+
+    - **test_add_op**
+        * Tests the correctness of the Addition operation, by taking a sample of numbers from 0.._MAX_N and adding each one with the rest of the values, comparing the results (as strings) between BigNum additions and integer additions.
+
+    - **test_sub_op**
+
+        * Tests the correctness of the Substraction operation, by taking a sample of numbers from 0.._MAX_N and substracting each one with the rest of the values, comparing the results (as strings) between BigNum substractions and integer substractions.
+        * These tests also verify that an Exception is raised by the BigNum class for the values for which we would expect to get a negative result.
+
+    - **test_mul_op**
+
+        * Tests the correctness of the Multiplication operation, by taking a sample of numbers from 0.._MAX_N and multiplying each one with the rest of the values, comparing the results (as strings) between BigNum multiplications and integer multiplications.
+
+    - **test_pow_op**
+
+        * Tests the correctness of the Exponentiation operation, by taking a sample of numbers from 0.._MAX_N and exponentiating each one with the rest of the values, comparing the results (as strings) between BigNum exponentiation and integer exponentiation.
+
+    - **test_mod_op**
+
+        * Tests the correctness of the Modulo operation, by taking a sample of numbers from 0.._MAX_N and calculating the modulo of each one against the rest of the values, comparing the results (as strings) between BigNum modulo and integer modulo.
+        * These tests also verify that an Exception is raised by the BigNum class when we would try to calculate modulo 0 of a value.
+
+    - **test_floordiv_op**
+
+        * Tests the correctness of the Floor Division operation, by taking a sample of numbers from 0.._MAX_N and dividing each one with the rest of the values, comparing the results (as strings) between BigNum floor division and integer division.
+        * These tests also verify that an Exception is raised by the BigNum class when we would try to divide by 0.
+
+    - **test_sqrt_op**
+
+        * Tests the correctness of the Square Root operation, by taking a sample of numbers from 0.._MAX_N and calculating the square root of each number, comparing the results (as strings) between BigNum sqrt and the floor value of math.sqrt().
+
+    - **test_max_length**
+
+        * Tests that the BigNum class raises an Exception when the maximum digits count is reached, either via an initialization value that is too large, or a value that would result from a computation (i.e. exponentiation).
+
+    - **test_invalid_input**
+
+        * Tests that an Exception is raised when the constructor receives invalid input. For example negative/float numbers, or invalid strings that contain non-digit characters.
+
+    - **test_invalid_cases**
+
+        * Tests than an Exception is raised in every following situation:
+            * Division by 0 operation;
+            * Substraction that would yield a negative result;
+            * Modulo 0 operation;
+
+    - **test_predefined_results**
+
+        * Tests the correctness of operations for which we have a pre-calculated result represented as a string, with which we compare the string representation of the result obtained by using BigNum.
