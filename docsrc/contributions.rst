@@ -20,6 +20,13 @@ Each member of the team was assigned with one of the three modules during the en
 * Tested the correctness of each operation implemented by the component.
 * Validated preconditions and postconditions via exceptions and asserts, including invalid input.
 
+**ExprParser.** Developed by |github_logo| `firststef <https://github.com/firststef/>`_. Main tasks:
+
+* Implemented the lexer, parser and solver of the expressions.
+* Added unit testing and assertions to the code. Also teste the UI bridge. Assured > 90 coverage.
+* Assured integrations with BigNum
+* Solved bugs found in testing
+
 .. |github_logo| image:: _static/img/github_logo.png
    :height: 12
    :width: 12

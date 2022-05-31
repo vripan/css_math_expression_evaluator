@@ -98,6 +98,70 @@
 </section>
 <section id="expression-parser-testing">
 <h2>Expression Parser Testing<a class="headerlink" href="#expression-parser-testing" title="Permalink to this heading"></a></h2>
+<p>This section contains specifications regarding the Unit Testing conducted for the Expr Parser Component.
+Most of the tests use the int class as a substitute for BigNum, in case BigNum does an operation wrong, we can compare it to a flawless implementation, meaning the default int class.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>test_super_basic</strong></dt><dd><p>Testing a simple operation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_basic</strong></dt><dd><p>Testing multiple basic operations</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_special</strong></dt><dd><p>Testing power operators</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_parens</strong></dt><dd><p>Testing operations respecting parantheses order</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_rem</strong></dt><dd><p>This test checks a remainder operation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_unknown_token</strong></dt><dd><p>This test check that if we find an unknown character, we indeed get an error.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_missing_paren</strong></dt><dd><p>This test check that if we find a missing paranthese, we indeed get an error.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_sub_negative</strong></dt><dd><p>A negative result should throw an exception.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_div_0</strong></dt><dd><p>This test verifies that division by zero is prevented.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_complex</strong></dt><dd><p>Testing a more complex operation using multiple operators.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_vars</strong></dt><dd><p>Testing variable substitution is done corectly</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>test_sqrt</strong></dt><dd><p>Testing that sqrt operator works</p>
+</dd>
+</dl>
+</li>
+</ul>
 </section>
 <section id="big-number-testing">
 <h2>Big Number Testing<a class="headerlink" href="#big-number-testing" title="Permalink to this heading"></a></h2>

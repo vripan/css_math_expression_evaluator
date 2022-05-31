@@ -21,6 +21,45 @@ The component specific test files are :code:`test_ui.py` and :code:`test_ui_brid
 Expression Parser Testing
 *************************
 
+This section contains specifications regarding the Unit Testing conducted for the Expr Parser Component.
+Most of the tests use the int class as a substitute for BigNum, in case BigNum does an operation wrong, we can compare it to a flawless implementation, meaning the default int class.
+
+- **test_super_basic**
+    Testing a simple operation
+
+- **test_basic**
+    Testing multiple basic operations
+
+- **test_special**
+    Testing power operators
+
+- **test_parens**
+    Testing operations respecting parantheses order
+
+- **test_rem**
+    This test checks a remainder operation.
+
+- **test_unknown_token**
+    This test check that if we find an unknown character, we indeed get an error.
+
+- **test_missing_paren**
+    This test check that if we find a missing paranthese, we indeed get an error.
+
+- **test_sub_negative**
+    A negative result should throw an exception.
+
+- **test_div_0**
+    This test verifies that division by zero is prevented.
+
+- **test_complex**
+    Testing a more complex operation using multiple operators.
+
+- **test_vars**
+    Testing variable substitution is done corectly
+
+- **test_sqrt**
+    Testing that sqrt operator works
+
 Big Number Testing
 ***************************
 This section contains specifications regarding the Unit Testing conducted for the BigNum Component.
