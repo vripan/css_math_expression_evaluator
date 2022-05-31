@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -78,11 +79,11 @@
            <div itemprop="articleBody">
              
   <section id="testing">
-<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h1>
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h1>
 <p>The testing strategy used to check that the application behaves as expected is <strong>unit testing</strong>. Every component enumerate on <a class="reference internal" href="components.html"><span class="doc">components</span></a> page defines a test suite with multiple test case. Also a coverage report is generated <a class="reference internal" href="coverage.html"><span class="doc">here</span></a>.</p>
 <p>The tesing code is located in the <code class="code docutils literal notranslate"><span class="pre">tests</span></code> folder and can be runned using the script <code class="code docutils literal notranslate"><span class="pre">test.py</span></code>.</p>
 <section id="gui-testing">
-<h2>GUI Testing<a class="headerlink" href="#gui-testing" title="Permalink to this headline"></a></h2>
+<h2>GUI Testing<a class="headerlink" href="#gui-testing" title="Permalink to this heading"></a></h2>
 <p>The component specific test files are <code class="code docutils literal notranslate"><span class="pre">test_ui.py</span></code> and <code class="code docutils literal notranslate"><span class="pre">test_ui_bridge.py</span></code>. The implemented test cases valides multiple scenarios:</p>
 <ul class="simple">
 <li><p>variables list not unique</p></li>
@@ -96,10 +97,104 @@
 </ul>
 </section>
 <section id="expression-parser-testing">
-<h2>Expression Parser Testing<a class="headerlink" href="#expression-parser-testing" title="Permalink to this headline"></a></h2>
+<h2>Expression Parser Testing<a class="headerlink" href="#expression-parser-testing" title="Permalink to this heading"></a></h2>
 </section>
 <section id="big-number-testing">
-<h2>Big Number Testing<a class="headerlink" href="#big-number-testing" title="Permalink to this headline"></a></h2>
+<h2>Big Number Testing<a class="headerlink" href="#big-number-testing" title="Permalink to this heading"></a></h2>
+<p>This section contains specifications regarding the Unit Testing conducted for the BigNum Component.</p>
+<p>Note: <strong>_MAX_N</strong> represents the maximum range of numbers used in the test methods, which can be modified in the code (defaults to <strong>100</strong>).</p>
+<blockquote>
+<div><ul>
+<li><dl class="simple">
+<dt><strong>test_add_op</strong></dt><dd><ul class="simple">
+<li><p>Tests the correctness of the Addition operation, by taking a sample of numbers from 0.._MAX_N and adding each one with the rest of the values, comparing the results (as strings) between BigNum additions and integer additions.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>test_sub_op</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests the correctness of the Substraction operation, by taking a sample of numbers from 0.._MAX_N and substracting each one with the rest of the values, comparing the results (as strings) between BigNum substractions and integer substractions.</p></li>
+<li><p>These tests also verify that an Exception is raised by the BigNum class for the values for which we would expect to get a negative result.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_mul_op</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests the correctness of the Multiplication operation, by taking a sample of numbers from 0.._MAX_N and multiplying each one with the rest of the values, comparing the results (as strings) between BigNum multiplications and integer multiplications.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_pow_op</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests the correctness of the Exponentiation operation, by taking a sample of numbers from 0.._MAX_N and exponentiating each one with the rest of the values, comparing the results (as strings) between BigNum exponentiation and integer exponentiation.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_mod_op</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests the correctness of the Modulo operation, by taking a sample of numbers from 0.._MAX_N and calculating the modulo of each one against the rest of the values, comparing the results (as strings) between BigNum modulo and integer modulo.</p></li>
+<li><p>These tests also verify that an Exception is raised by the BigNum class when we would try to calculate modulo 0 of a value.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_floordiv_op</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests the correctness of the Floor Division operation, by taking a sample of numbers from 0.._MAX_N and dividing each one with the rest of the values, comparing the results (as strings) between BigNum floor division and integer division.</p></li>
+<li><p>These tests also verify that an Exception is raised by the BigNum class when we would try to divide by 0.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_sqrt_op</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests the correctness of the Square Root operation, by taking a sample of numbers from 0.._MAX_N and calculating the square root of each number, comparing the results (as strings) between BigNum sqrt and the floor value of math.sqrt().</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_max_length</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests that the BigNum class raises an Exception when the maximum digits count is reached, either via an initialization value that is too large, or a value that would result from a computation (i.e. exponentiation).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_invalid_input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests that an Exception is raised when the constructor receives invalid input. For example negative/float numbers, or invalid strings that contain non-digit characters.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_invalid_cases</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>Tests than an Exception is raised in every following situation:</dt><dd><ul>
+<li><p>Division by 0 operation;</p></li>
+<li><p>Substraction that would yield a negative result;</p></li>
+<li><p>Modulo 0 operation;</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>test_predefined_results</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tests the correctness of operations for which we have a pre-calculated result represented as a string, with which we compare the string representation of the result obtained by using BigNum.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
 </section>
 </section>
 
