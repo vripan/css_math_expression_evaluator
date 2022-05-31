@@ -16,12 +16,20 @@ Expression Parser
 Preconditions:
 
 I. Solver
+
     **tokenize()**:
     - cannot call tokenize() more times
 
 II. Parser
+
     **__init__()**:
-    - check for required operations on big_number_type: __add__, __sub__, __mul__, __floor, __mod__, __pow__
+    - check for required operations on big_number_type: 
+        - :code:`__add__`
+        - :code:`__sub__`
+        - :code:`__mul__`
+        - :code:`__floordiv__`
+        - :code:`__mod__`
+        - :code:`__pow__`
     - expression cannot be empty
 
     **peek()**:
@@ -31,6 +39,7 @@ II. Parser
     - method cannot be called when there is no token left in stream
     
 III. Solver
+
     **solve_normal()**:
     - we assert that the type we get from solving partial expressions is the same type as the one expected
 

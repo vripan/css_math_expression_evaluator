@@ -5,7 +5,7 @@ Homework for master course Software Quality, Al. I. Cuza University, Iasi, 2022
 ---
 
 
-Documentation preview [link](https://htmlpreview.github.io/?https://github.com/vripan/css_math_expression_evaluator/blob/main/docs/build/html/index.html)
+Documentation preview [link](https://vripan.github.io/css_math_expression_evaluator/)
 
 ---
 
