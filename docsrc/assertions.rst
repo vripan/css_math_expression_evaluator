@@ -13,6 +13,30 @@ The application user interfaces treats the majority of cases as exceptions. The 
 Expression Parser
 *****************
 
+Preconditions:
+
+I. Solver
+    **tokenize()**:
+    - cannot call tokenize() more times
+
+II. Parser
+    
+    **__init__()**:
+    - check for required operations on big_number_type: __add__, __sub__, __mul__, __floor, __mod__, __pow__
+    - expression cannot be empty
+
+    **peek()**:
+    - method cannot be called when there is no token left in stream
+
+    **eat()**:
+    - method cannot be called when there is no token left in stream
+    
+III. Solver
+    **solve_normal()**:
+    - we assert that the type we get from solving partial expressions is the same type as the one expected
+
+* assertions were also used throughout the code to check for unreachable code execution(unexpected switch cases, etc)
+
 Big Number
 **********
 The following operations contain pre/post conditions checks:

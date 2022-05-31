@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -79,10 +80,10 @@
            <div itemprop="articleBody">
              
   <section id="assertions">
-<h1>Assertions<a class="headerlink" href="#assertions" title="Permalink to this headline"></a></h1>
+<h1>Assertions<a class="headerlink" href="#assertions" title="Permalink to this heading"></a></h1>
 <p>Every application component checks preconditions, invariants and postconditions.</p>
 <section id="gui">
-<h2>GUI<a class="headerlink" href="#gui" title="Permalink to this headline"></a></h2>
+<h2>GUI<a class="headerlink" href="#gui" title="Permalink to this heading"></a></h2>
 <p>The application user interfaces treats the majority of cases as exceptions. The relevant preconditions in GUI are related to string validations because all getters and setters use expects string as argument type:</p>
 <ul class="simple">
 <li><p><strong>parameter type</strong> checks, e.g. <code class="code docutils literal notranslate"><span class="pre">assert</span> <span class="pre">type(param)</span> <span class="pre">is</span> <span class="pre">str</span></code></p></li>
@@ -90,10 +91,36 @@
 </ul>
 </section>
 <section id="expression-parser">
-<h2>Expression Parser<a class="headerlink" href="#expression-parser" title="Permalink to this headline"></a></h2>
+<h2>Expression Parser<a class="headerlink" href="#expression-parser" title="Permalink to this heading"></a></h2>
+<p>Preconditions:</p>
+<ol class="upperroman">
+<li><dl class="simple">
+<dt>Solver</dt><dd><p><strong>tokenize()</strong>:
+- cannot call tokenize() more times</p>
+</dd>
+</dl>
+</li>
+<li><p>Parser
+<strong>__init__()</strong>:
+- check for required operations on big_number_type: __add__, __sub__, __mul__, __floor, __mod__, __pow__
+- expression cannot be empty</p>
+<p><strong>peek()</strong>:
+- method cannot be called when there is no token left in stream</p>
+<p><strong>eat()</strong>:
+- method cannot be called when there is no token left in stream</p>
+</li>
+<li><p>Solver</p></li>
+</ol>
+<blockquote>
+<div><p><strong>solve_normal()</strong>:
+- we assert that the type we get from solving partial expressions is the same type as the one expected</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>assertions were also used throughout the code to check for unreachable code execution(unexpected switch cases, etc)</p></li>
+</ul>
 </section>
 <section id="big-number">
-<h2>Big Number<a class="headerlink" href="#big-number" title="Permalink to this headline"></a></h2>
+<h2>Big Number<a class="headerlink" href="#big-number" title="Permalink to this heading"></a></h2>
 <p>The following operations contain pre/post conditions checks:</p>
 <ul class="simple">
 <li><dl class="simple">

@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -79,11 +80,11 @@
            <div itemprop="articleBody">
              
   <section id="testing">
-<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h1>
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h1>
 <p>The testing strategy used to check that the application behaves as expected is <strong>unit testing</strong>. Every component enumerate on <a class="reference internal" href="components.html"><span class="doc">components</span></a> page defines a test suite with multiple test case. Also a coverage report is generated <a class="reference internal" href="coverage.html"><span class="doc">here</span></a>.</p>
 <p>The tesing code is located in the <code class="code docutils literal notranslate"><span class="pre">tests</span></code> folder and can be runned using the script <code class="code docutils literal notranslate"><span class="pre">test.py</span></code>.</p>
 <section id="gui-testing">
-<h2>GUI Testing<a class="headerlink" href="#gui-testing" title="Permalink to this headline"></a></h2>
+<h2>GUI Testing<a class="headerlink" href="#gui-testing" title="Permalink to this heading"></a></h2>
 <p>The component specific test files are <code class="code docutils literal notranslate"><span class="pre">test_ui.py</span></code> and <code class="code docutils literal notranslate"><span class="pre">test_ui_bridge.py</span></code>. The implemented test cases valides multiple scenarios:</p>
 <ul class="simple">
 <li><p>variables list not unique</p></li>
@@ -97,7 +98,7 @@
 </ul>
 </section>
 <section id="expression-parser-testing">
-<h2>Expression Parser Testing<a class="headerlink" href="#expression-parser-testing" title="Permalink to this headline"></a></h2>
+<h2>Expression Parser Testing<a class="headerlink" href="#expression-parser-testing" title="Permalink to this heading"></a></h2>
 <p>This section contains specifications regarding the Unit Testing conducted for the Expr Parser Component.
 Most of the tests use the int class as a substitute for BigNum, in case BigNum does an operation wrong, we can compare it to a flawless implementation, meaning the default int class.</p>
 <ul class="simple">
@@ -164,7 +165,7 @@ Most of the tests use the int class as a substitute for BigNum, in case BigNum d
 </ul>
 </section>
 <section id="big-number-testing">
-<h2>Big Number Testing<a class="headerlink" href="#big-number-testing" title="Permalink to this headline"></a></h2>
+<h2>Big Number Testing<a class="headerlink" href="#big-number-testing" title="Permalink to this heading"></a></h2>
 <p>This section contains specifications regarding the Unit Testing conducted for the BigNum Component.</p>
 <p>Note: <strong>_MAX_N</strong> represents the maximum range of numbers used in the test methods, which can be modified in the code (defaults to <strong>100</strong>).</p>
 <blockquote>
