@@ -1,9 +1,9 @@
-Project description
-===================
+.. _description_page:
+
+Software Quality - Project Description
+======================================
 Accessed on May 30, 2022.
 
-Software Quality - Project
-==========================
 Goal
 ----
 

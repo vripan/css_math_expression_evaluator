@@ -272,6 +272,8 @@ class MathExpressionEvaluatorUi(tk.Frame):
                     value = value_box.get()
 
                     if len(name) == 0:
+                        if len(value) != 0:
+                            raise Exception("invalid variable name")
                         continue
 
                     DataValidator.is_expression_variable(name)

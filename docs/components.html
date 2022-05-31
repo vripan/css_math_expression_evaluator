@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Components &mdash; MathExpressionEvaluator  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing" href="testing.html" />
+    <link rel="prev" title="How to run" href="how_to_run.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> MathExpressionEvaluator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">Software Quality - Project Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how_to_run.html">How to run</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gui-component">GUI Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expression-parser-component">Expression Parser Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#big-number-component">Big Number Component</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">Contributions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="coverage.html">Coverage report</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MathExpressionEvaluator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Components</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/components.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="components">
+<h1>Components<a class="headerlink" href="#components" title="Permalink to this headline"></a></h1>
+<p>The application is build from multiple components, every one of them with a well defined role. As a generic overview, the first component that user interacts with is the GUI, that reads the input from the fields or from the XML file and then sends it to the expression parsers component that interacts with the big number in order to compute the expression. After the expression is computed the result is returned to the user to be desplayed in GUI or written to file.</p>
+<section id="gui-component">
+<h2>GUI Component<a class="headerlink" href="#gui-component" title="Permalink to this headline"></a></h2>
+<p>The component is responsible with all the I/O operations between the user and the application. There a two ways of interacting with the GUI:</p>
+<ul class="simple">
+<li><p>directly through GUI input fields.</p></li>
+<li><p>indirectly through XML files.</p></li>
+</ul>
+<p>More details presented on <a class="reference internal" href="how_to_run.html"><span class="doc">how to run</span></a> page.</p>
+<a class="reference internal image-reference" href="_images/gui_init.png"><img alt="_images/gui_init.png" class="align-center" src="_images/gui_init.png" style="width: 401.6px; height: 657.6px;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Backend interaction.</strong> The interaction between backend and the frontend is made using the class <code class="code docutils literal notranslate"><span class="pre">BackendBridge</span></code> defined in <code class="code docutils literal notranslate"><span class="pre">ui_bridge.py</span></code>, using the two methods available:</p>
+<ul class="simple">
+<li><p>method <code class="code docutils literal notranslate"><span class="pre">exponent(...)</span></code> that implements a getter for the internal exponent data field used to populate field <code class="code docutils literal notranslate"><span class="pre">Exponent</span></code> on initialization.</p></li>
+<li><p>method <code class="code docutils literal notranslate"><span class="pre">compute_data(...)</span></code> that calls the needed backend method in order to compute the math expression provided.</p></li>
+</ul>
+<p><strong>Input validation.</strong> The input is always readed directly from the GUI fields, so there is a uniform way of validating data before sending it to the backend. Because of this, when an XML is loaded, the actual data is first set into the GUI fields in order to be readed leater. The actual data validation is made for every field in the associated setter/getter methods.</p>
+<p><strong>Data constraits.</strong> Every field has some basic constraints in order to verify the input data as follows:</p>
+<ul class="simple">
+<li><p>field <strong>Exponent</strong>: expects a non-zero unsigned integer.</p></li>
+<li><p>field <strong>Expression</strong>: expects a non-empty arithmetic expression that contains only the alphanumeric characters and the characters <code class="code docutils literal notranslate"><span class="pre">+-*/()^%</span></code>.</p></li>
+<li><p>field <strong>Variable Name</strong>: expects a non-empty string of length 1 that matches the character set <code class="code docutils literal notranslate"><span class="pre">[a-zA-Z]</span></code></p></li>
+<li><p>field <strong>Variable Value</strong>: expects a unsigned integer smaller the maximum number defined by the exponent.</p></li>
+</ul>
+</section>
+<section id="expression-parser-component">
+<h2>Expression Parser Component<a class="headerlink" href="#expression-parser-component" title="Permalink to this headline"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>TODO</p>
+</div>
+</section>
+<section id="big-number-component">
+<h2>Big Number Component<a class="headerlink" href="#big-number-component" title="Permalink to this headline"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>TODO</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="how_to_run.html" class="btn btn-neutral float-left" title="How to run" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="testing.html" class="btn btn-neutral float-right" title="Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vladimir RIPAN, Stefan PETROVICI, Gabriel PANTIRU.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

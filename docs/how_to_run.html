@@ -18,8 +18,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Testing" href="testing.html" />
-    <link rel="prev" title="MathExpressionEvaluator documentation" href="index.html" /> 
+    <link rel="next" title="Components" href="components.html" />
+    <link rel="prev" title="Software Quality - Project Description" href="description.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,13 +38,24 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">Software Quality - Project Description</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to run</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#direct-interaction">Direct Interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xml-interaction">XML Interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xml-structure">XML Structure</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#exception-cases">Exception Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributions.html">Contributions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="coverage.html">Coverage report</a></li>
 </ul>
 
         </div>
@@ -75,12 +86,118 @@
 <h1>How to run<a class="headerlink" href="#how-to-run" title="Permalink to this headline"></a></h1>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
-<p>The application has been tested using python version 3.8.0, with no external depencies.</p>
+<p>The application has been tested using python 3.8.0, with no external depencies.</p>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
 <p>The application is based on a graphic user interface (GUI) and can be started from <code class="code docutils literal notranslate"><span class="pre">src/main.py</span></code>.</p>
 <img alt="_images/gui_init.png" class="align-center" src="_images/gui_init.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>There are two ways for interacting with the GUI, directly using the input fields or using XML formated documents.</p>
+<section id="direct-interaction">
+<h3>Direct Interaction<a class="headerlink" href="#direct-interaction" title="Permalink to this headline"></a></h3>
+<p>There are multiple input fields and two output fields. The input data, like the math formula, variables and the exponent, can be directly typed into fields. And as output, the application will display the formula result, the steps to get from the expression form to results or an error window if an exception case is reached.</p>
+<p><strong>Exponent field.</strong>
+Expects an unsigned integer that represent the maximum number the application can work with, e.g. an expoenent with value of <code class="code docutils literal notranslate"><span class="pre">10</span></code> represents that the maximum value for integers and operation results is <code class="code docutils literal notranslate"><span class="pre">10</span></code> raised to the power <code class="code docutils literal notranslate"><span class="pre">10</span></code>, resulting in <code class="code docutils literal notranslate"><span class="pre">10000000000</span></code>.</p>
+<p><strong>Formula field.</strong>
+Expects a arithmetic expression that can combine user defined variables and unsigned integers , e.g. <code class="code docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">(10</span> <span class="pre">+</span> <span class="pre">a)</span> <span class="pre">-</span> <span class="pre">1</span></code>, with the following operators:</p>
+<ul class="simple">
+<li><p>addition (<em>operator</em> <code class="code docutils literal notranslate"><span class="pre">+</span></code>)</p></li>
+<li><p>substraction (<em>operator</em> <code class="code docutils literal notranslate"><span class="pre">-</span></code>)</p></li>
+<li><p>multiplication (<em>operator</em> <code class="code docutils literal notranslate"><span class="pre">*</span></code>)</p></li>
+<li><p>integer division (remainder is discarded) (<em>operator</em> <code class="code docutils literal notranslate"><span class="pre">/</span></code>)</p></li>
+<li><p>square root (<em>function</em> <code class="code docutils literal notranslate"><span class="pre">sqrt(...)</span></code>)</p></li>
+<li><p>power (<em>function</em> <code class="code docutils literal notranslate"><span class="pre">pow(...)</span></code> or <em>operator</em> <code class="code docutils literal notranslate"><span class="pre">**</span></code>)</p></li>
+</ul>
+<p><strong>Variable fields.</strong>
+A variable is represented by a pair between a name and the value of the variable. The name field of the variable must be of lenght <code class="code docutils literal notranslate"><span class="pre">1</span></code>, e.g. <code class="code docutils literal notranslate"><span class="pre">a</span></code>, <code class="code docutils literal notranslate"><span class="pre">b</span></code>, <code class="code docutils literal notranslate"><span class="pre">c</span></code>, …, <code class="code docutils literal notranslate"><span class="pre">z</span></code>, <code class="code docutils literal notranslate"><span class="pre">A</span></code>, …, <code class="code docutils literal notranslate"><span class="pre">Z</span></code>. Also the variable value must be an integer constant. Multipe variables can be used by pressing the <cite>+</cite> button on the top right of the <code class="code docutils literal notranslate"><span class="pre">Variables</span></code> group, or removed by emptying the linked fields.</p>
+<p><strong>Result fields.</strong> If the computation successfully finishes, the field will contain the expression result in the form of an unsigned integer. If a negative integer is reached during computation an exception will be raise, as explained in the following section <a class="reference internal" href="#exception-cases"><span class="std std-ref">Exception Cases</span></a>.</p>
+<p><strong>Steps field.</strong> If the computation successfully finishes, the read-only text area will contain the steps performed to reach the final result, one step per line. For exemple, the steps performed for the expression <code class="code docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">(</span> <span class="pre">2048</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">)</span></code> would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2048</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">**</span> <span class="mi">5</span><span class="p">)))</span>
+<span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2049</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">**</span> <span class="mi">5</span><span class="p">)))</span>
+<span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2049</span> <span class="o">*</span> <span class="mi">243</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">497907</span><span class="p">)</span>
+<span class="mi">995814</span>
+</pre></div>
+</div>
+</section>
+<section id="xml-interaction">
+<h3>XML Interaction<a class="headerlink" href="#xml-interaction" title="Permalink to this headline"></a></h3>
+<p>Apllication can use XML files for input, output serialization, or complete calculation of an input file as a non-interactive mode. The available XML operation are available in menu entry <cite>File</cite>.</p>
+<img alt="_images/gui_menu.png" class="align-center" src="_images/gui_menu.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li><p><strong>Open XML</strong>. Used to load an XML file, selected through a dialog window, with a predefined content structure as explained in section <a class="reference internal" href="#xml-structure"><span class="std std-ref">XML Structure</span></a>.</p></li>
+<li><p><strong>Save XML</strong>. Used to save the curent GUI fields in a XML formated file, in a location specified through a dialog window.</p></li>
+<li><p><strong>Run XML</strong>. Used to run the input file, chosen through a dialog window, and saving the result in a file with name formated from input file name and <code class="code docutils literal notranslate"><span class="pre">_out</span></code> sufix, e.g. result from input file <code class="code docutils literal notranslate"><span class="pre">math_expr.xml</span></code> is saved in <code class="code docutils literal notranslate"><span class="pre">math_expr_out.xml</span></code>.</p></li>
+</ul>
+</section>
+<section id="xml-structure">
+<h3>XML Structure<a class="headerlink" href="#xml-structure" title="Permalink to this headline"></a></h3>
+<p><strong>Input structure.</strong> The input file has the following schema:</p>
+<ul class="simple">
+<li><p>the root tag <code class="code docutils literal notranslate"><span class="pre">&lt;math&gt;</span></code></p></li>
+<li><p>the child of root tag <code class="code docutils literal notranslate"><span class="pre">&lt;expression&gt;</span></code> that defines the arithmetic expression to compute.</p></li>
+<li><p>the child of root tag <code class="code docutils literal notranslate"><span class="pre">&lt;variables&gt;</span></code> the thefines the used variables in the arithmetic expression.</p></li>
+<li><p>the tag <code class="code docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> that defines a variables using a custom attribute where the attribute name is the variable name and the attribute value is the variable value.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">math</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">expression</span><span class="o">&gt;</span>
+    <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="mi">20</span>
+    <span class="o">&lt;/</span><span class="n">expression</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">variables</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">var</span> <span class="n">a</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="n">var</span> <span class="n">b</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="o">/&gt;</span>
+    <span class="o">&lt;/</span><span class="n">variables</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">math</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>Output structure.</strong> The output structure has the same base structure as the input, but with additional tags:</p>
+<ul class="simple">
+<li><p>the tag <code class="code docutils literal notranslate"><span class="pre">result</span></code> that contains the arithmetic expression result</p></li>
+<li><p>the tag <code class="code docutils literal notranslate"><span class="pre">output</span></code> that contains the steps executed in order to compute the expression, one per line</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">math</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">expression</span><span class="o">&gt;</span>
+            <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="mi">20</span>
+    <span class="o">&lt;/</span><span class="n">expression</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">variables</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">var</span> <span class="n">a</span><span class="o">=</span><span class="s2">&quot;10&quot;</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="n">var</span> <span class="n">b</span><span class="o">=</span><span class="s2">&quot;3&quot;</span> <span class="o">/&gt;</span>
+     <span class="o">&lt;/</span><span class="n">variables</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">result</span><span class="o">&gt;</span>
+            <span class="mi">70</span>
+    <span class="o">&lt;/</span><span class="n">result</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">output</span><span class="o">&gt;</span>
+            <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span>
+            <span class="p">(</span><span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span>
+            <span class="p">(</span><span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span>
+            <span class="p">(</span><span class="mi">10</span> <span class="o">+</span> <span class="mi">60</span><span class="p">)</span>
+            <span class="mi">70</span>
+    <span class="o">&lt;/</span><span class="n">output</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">math</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="exception-cases">
+<h2>Exception Cases<a class="headerlink" href="#exception-cases" title="Permalink to this headline"></a></h2>
+<p>There are some exception cases that are considered in the application. For every exception case a exection context is given through the error window to indentify the error location easier. For example, if an invalid set of variables is given, the following error box will be displayed:</p>
+<img alt="_images/gui_error.png" class="align-center" src="_images/gui_error.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The most common exception cases:</p>
+<ul class="simple">
+<li><p><strong>Invalid input data.</strong></p></li>
+<li><p><strong>Negative number reached.</strong> Raised when a negative number is computed, e.g. <code class="code docutils literal notranslate"><span class="pre">1</span> <span class="pre">-</span> <span class="pre">2</span></code></p></li>
+<li><p><strong>Division by zero.</strong></p></li>
+<li><p><strong>Max number overflow.</strong> Raised when the computation generates a number larger than the maximum number set through the  <em>exponent field</em>.</p></li>
+</ul>
 </section>
 </section>
 
@@ -88,8 +205,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="MathExpressionEvaluator documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="testing.html" class="btn btn-neutral float-right" title="Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="description.html" class="btn btn-neutral float-left" title="Software Quality - Project Description" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="components.html" class="btn btn-neutral float-right" title="Components" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

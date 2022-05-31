@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Contributions" href="contributions.html" />
-    <link rel="prev" title="How to run" href="how_to_run.html" /> 
+    <link rel="prev" title="Components" href="components.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,9 +38,19 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">Software Quality - Project Description</a></li>
 <li class="toctree-l1"><a class="reference internal" href="how_to_run.html">How to run</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Components</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gui-testing">GUI Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expression-parser-testing">Expression Parser Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#big-number-testing">Big Number Testing</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="contributions.html">Contributions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="coverage.html">Coverage report</a></li>
 </ul>
 
         </div>
@@ -69,13 +79,35 @@
              
   <section id="testing">
 <h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h1>
+<p>The testing strategy used to check that the application behaves as expected is <strong>unit testing</strong>. Every component enumerate on <a class="reference internal" href="components.html"><span class="doc">components</span></a> page defines a test suite with multiple test case. Also a coverage report is generated <a class="reference internal" href="coverage.html"><span class="doc">here</span></a>.</p>
+<p>The tesing code is located in the <code class="code docutils literal notranslate"><span class="pre">tests</span></code> folder and can be runned using the script <code class="code docutils literal notranslate"><span class="pre">test.py</span></code>.</p>
+<section id="gui-testing">
+<h2>GUI Testing<a class="headerlink" href="#gui-testing" title="Permalink to this headline"></a></h2>
+<p>The component specific test files are <code class="code docutils literal notranslate"><span class="pre">test_ui.py</span></code> and <code class="code docutils literal notranslate"><span class="pre">test_ui_bridge.py</span></code>. The implemented test cases valides multiple scenarios:</p>
+<ul class="simple">
+<li><p>variables list not unique</p></li>
+<li><p>reading and writting GUI fields with valid and invalid values</p></li>
+<li><p>initial application state</p></li>
+<li><p>invalid and valid XML loading</p></li>
+<li><p>open file dialog closed during XML loading</p></li>
+<li><p>XML saving</p></li>
+<li><p>save file dialog closed during XML saving</p></li>
+<li><p>XML loading, computing and saving</p></li>
+</ul>
+</section>
+<section id="expression-parser-testing">
+<h2>Expression Parser Testing<a class="headerlink" href="#expression-parser-testing" title="Permalink to this headline"></a></h2>
+</section>
+<section id="big-number-testing">
+<h2>Big Number Testing<a class="headerlink" href="#big-number-testing" title="Permalink to this headline"></a></h2>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="how_to_run.html" class="btn btn-neutral float-left" title="How to run" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="components.html" class="btn btn-neutral float-left" title="Components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="contributions.html" class="btn btn-neutral float-right" title="Contributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
